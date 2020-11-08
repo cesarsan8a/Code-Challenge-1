@@ -8,6 +8,7 @@ class App extends Component {
     this.state = {
       x: null, // horizontal location
       y: null, // vertical location
+      isPacmanOntheMap: false,
       rotation: 0, // where it's facing
       display: 'none' // report visibility
     };
@@ -20,6 +21,8 @@ class App extends Component {
   }
 
   _moveForward() {
+    if (!this.state.isPacmanOntheMap) return; //ignores commands if pacman is not on the map.
+    
     // depending on which direction pacman is facing it will move in that direction one unit
     if ( this.state.rotation === 0 && this.state.x < 4 ) {
       this.setState({ x: this.state.x + 1 });
@@ -36,6 +39,7 @@ class App extends Component {
   }
 
   _rotateRight() {
+    if (!this.state.isPacmanOntheMap) return;
     // it will allow pacman to rotate clock-wise 90deg
     if (this.state.rotation >= 270) { // 360deg == 0deg
       this.setState({ rotation: 0 })
@@ -46,6 +50,7 @@ class App extends Component {
   }
 
   _rotateLeft() {
+    if (!this.state.isPacmanOntheMap) return;
     // same as above but anticlock-wise
     if (this.state.rotation <= 0) {
       this.setState({ rotation: 270 })
@@ -56,6 +61,7 @@ class App extends Component {
   }
 
   _report() {
+    if (!this.state.isPacmanOntheMap) return;
     // shows the location where pacman is and where is facing.
     this.setState({ display: 'inline' });
   }
@@ -67,6 +73,7 @@ class App extends Component {
     this.setState({ y: parseFloat(event.target.y.value) });
     this.setState({ rotation: parseFloat(event.target.rotation.value) })
     this.setState({ display: 'none' });
+    this.setState({ isPacmanOntheMap: true });
   }
 
   render() {
