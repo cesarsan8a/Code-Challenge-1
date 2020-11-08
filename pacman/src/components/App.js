@@ -11,42 +11,47 @@ class App extends Component {
       rotation: 0
     };
     this._moveForward = this._moveForward.bind(this);
+    this._rotateRight = this._rotateRight.bind(this);
+    this._rotateLeft = this._rotateLeft.bind(this);
   }
 
   _moveForward() {
-    let movement;
-    let coordinate;
-
-    if ( this.state.facing === "E" || this.state.facing === "S" ) {
-      movement = 1;
-    } else {
-      movement = -1;
+    if ( this.state.rotation === 0 && this.state.x < 4 ) {
+      this.setState({ x: this.state.x + 1 });
+    } else if ( this.state.rotation === 180 && this.state.x > 0 ) {
+      this.setState({ x: this.state.x - 1 });
+    } else if ( this.state.rotation === 90 && this.state.y < 4 ) {
+      this.setState({ y: this.state.y + 1 });
+    } else if ( this.state.rotation === 270 && this.state.y > 0 ){
+      this.setState({ y: this.state.y - 1 })
     }
-
-    if ( this.state.facing === "E" || this.state.facing === "W") {
-      coordinate = 'x';
-    } else {
-      coordinate = 'y';
-    }
-
-    if ( this.state.[`${ coordinate }`] === 4 && movement === 1 ) {
-      this.setState({ [`${ coordinate }`]: 4 })
-    } else if ( this.state.[`${ coordinate }`] === 0 && movement === -1 ) {
-      this.setState({ [`${ coordinate }`]: 0 })
-    } else {
-      this.setState({ [`${ coordinate }`]: this.state.[`${coordinate}`] + movement })
-    }
-
   }
+
+  _rotateRight() {
+    if (this.state.rotation >= 270) {
+      this.setState({ rotation: 0 })
+    } else {
+      this.setState({ rotation: this.state.rotation + 90 })
+    }
+  }
+
+  _rotateLeft() {
+    if (this.state.rotation <= 0) {
+      this.setState({ rotation: 270 })
+    } else {
+      this.setState({ rotation: Math.abs(this.state.rotation - 90) })
+    }
+  }
+
 
   render() {
     return (
       <div>
-        <Board pacmanPosition={ [this.state.x, this.state.y] } facing={ this.state.rotation } />
+        <Board pacmanPosition={ [this.state.x, this.state.y] } rotation={ this.state.rotation } />
   
         <button onClick={ this._moveForward }>Move</button>
         <button onClick={ this._rotateRight }>Right</button>
-        <button>Left</button>
+        <button onClick={ this._rotateLeft }>Left</button>
         <button>Report</button>
       </div>
     );

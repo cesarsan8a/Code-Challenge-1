@@ -32,7 +32,6 @@ function Board({ pacmanPosition, rotation }) {
         squares.push(renderSquare(i, pacmanPosition, rotation))
     }
 
-    console.log(squares);
     return (
         <div id="board">
             { squares }
