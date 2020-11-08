@@ -4,3 +4,8 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+#squares {
+    width: 20%;
+    height: 20%;
+}

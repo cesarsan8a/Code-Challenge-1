@@ -1,17 +1,12 @@
 import React from 'react';
+import '../styles/Square.css';
+
 
 function Square({ children }) {
     return(
-        <div 
-            style={{
-                backgroundColor: 'black',
-                width: '100%',
-                height: '100%'
-            }}
-        >
-
+        <div id="square">
+            {/* So it ignores the pacman component */}
             { children }
-        
         </div>
     );
 }

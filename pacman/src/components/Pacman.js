@@ -8,7 +8,7 @@ function Pacman(prop) {
         id="pacman" 
         src={ sprite }
         style={{
-            transform: `rotate(${ prop.rotate }deg)`,
+            transform: `rotate(${ prop.rotate }deg)`, // The transform-rotate function allows Pacman to rotate and face diferent directions
         }}
         />
     );

@@ -6,10 +6,10 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      x: null,
-      y: null,
-      rotation: 0,
-      display: 'none'
+      x: null, // horizontal location
+      y: null, // vertical location
+      rotation: 0, // where it's facing
+      display: 'none' // report visibility
     };
 
     this._moveForward = this._moveForward.bind(this);
@@ -20,6 +20,7 @@ class App extends Component {
   }
 
   _moveForward() {
+    // depending on which direction pacman is facing it will move in that direction one unit
     if ( this.state.rotation === 0 && this.state.x < 4 ) {
       this.setState({ x: this.state.x + 1 });
     } else if ( this.state.rotation === 180 && this.state.x > 0 ) {
@@ -29,11 +30,14 @@ class App extends Component {
     } else if ( this.state.rotation === 90 && this.state.y > 0 ){
       this.setState({ y: this.state.y - 1 })
     }
+
+    // because the grid is 5x5 the limits are set at 0 and 4
     this.setState({ display: 'none' });
   }
 
   _rotateRight() {
-    if (this.state.rotation >= 270) {
+    // it will allow pacman to rotate clock-wise 90deg
+    if (this.state.rotation >= 270) { // 360deg == 0deg
       this.setState({ rotation: 0 })
     } else {
       this.setState({ rotation: this.state.rotation + 90 })
@@ -42,6 +46,7 @@ class App extends Component {
   }
 
   _rotateLeft() {
+    // same as above but anticlock-wise
     if (this.state.rotation <= 0) {
       this.setState({ rotation: 270 })
     } else {
@@ -51,10 +56,12 @@ class App extends Component {
   }
 
   _report() {
+    // shows the location where pacman is and where is facing.
     this.setState({ display: 'inline' });
   }
 
   _handleSubmit(event) {
+    // allows to relocate pacman in any point of the grid
     event.preventDefault();
     this.setState({ x: parseFloat(event.target.x.value) });
     this.setState({ y: parseFloat(event.target.y.value) });
@@ -64,6 +71,7 @@ class App extends Component {
 
   render() {
     let facing;
+    // translation of deg into cardinal points
     if ( this.state.rotation === 0 ) {
       facing = "East";
     } else if ( this.state.rotation === 90 ) {
@@ -87,7 +95,7 @@ class App extends Component {
 
           <label>
             X Coordanate:
-            <input id='x' type="number" min="0" max="4" placeholder="x" required /> 
+            <input id='x' autoFocus type="number" min="0" max="4" placeholder="x" required /> 
           </label>
 
           <br />
@@ -99,13 +107,14 @@ class App extends Component {
 
           <br />
 
+          {/* The values of the cardinal directions represent the angle in a circle */}
           <label>
             North:
-            <input type='radio' id='north' name='rotation' value='270' />
+            <input type='radio'  id='north' name='rotation' value='270' />
           </label>
           <label>
             East:
-            <input type='radio' id='east' name='rotation' value='0' />
+            <input type='radio' defaultChecked id='east' name='rotation' value='0' />
           </label>
           <label>
             South:
