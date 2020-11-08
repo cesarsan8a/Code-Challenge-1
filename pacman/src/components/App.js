@@ -6,13 +6,17 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      x: 2,
-      y: 2,
-      rotation: 0
+      x: null,
+      y: null,
+      rotation: 0,
+      display: 'none'
     };
+
     this._moveForward = this._moveForward.bind(this);
     this._rotateRight = this._rotateRight.bind(this);
     this._rotateLeft = this._rotateLeft.bind(this);
+    this._report = this._report.bind(this);
+    this._handleSubmit= this._handleSubmit.bind(this);
   }
 
   _moveForward() {
@@ -20,11 +24,12 @@ class App extends Component {
       this.setState({ x: this.state.x + 1 });
     } else if ( this.state.rotation === 180 && this.state.x > 0 ) {
       this.setState({ x: this.state.x - 1 });
-    } else if ( this.state.rotation === 90 && this.state.y < 4 ) {
+    } else if ( this.state.rotation === 270 && this.state.y < 4 ) {
       this.setState({ y: this.state.y + 1 });
-    } else if ( this.state.rotation === 270 && this.state.y > 0 ){
+    } else if ( this.state.rotation === 90 && this.state.y > 0 ){
       this.setState({ y: this.state.y - 1 })
     }
+    this.setState({ display: 'none' });
   }
 
   _rotateRight() {
@@ -33,6 +38,7 @@ class App extends Component {
     } else {
       this.setState({ rotation: this.state.rotation + 90 })
     }
+    this.setState({ display: 'none' });
   }
 
   _rotateLeft() {
@@ -41,10 +47,33 @@ class App extends Component {
     } else {
       this.setState({ rotation: Math.abs(this.state.rotation - 90) })
     }
+    this.setState({ display: 'none' });
   }
 
+  _report() {
+    this.setState({ display: 'inline' });
+  }
+
+  _handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ x: parseFloat(event.target.x.value) });
+    this.setState({ y: parseFloat(event.target.y.value) });
+    this.setState({ rotation: parseFloat(event.target.rotation.value) })
+    this.setState({ display: 'none' });
+  }
 
   render() {
+    let facing;
+    if ( this.state.rotation === 0 ) {
+      facing = "East";
+    } else if ( this.state.rotation === 90 ) {
+      facing = "South";
+    } else if ( this.state.rotation === 180 ) {
+      facing = "West";
+    } else if ( this.state.rotation === 270 ) {
+      facing = "North";
+    }
+
     return (
       <div>
         <Board pacmanPosition={ [this.state.x, this.state.y] } rotation={ this.state.rotation } />
@@ -52,7 +81,49 @@ class App extends Component {
         <button onClick={ this._moveForward }>Move</button>
         <button onClick={ this._rotateRight }>Right</button>
         <button onClick={ this._rotateLeft }>Left</button>
-        <button>Report</button>
+        <button onClick={ this._report }> Report</button>
+
+        <form onSubmit={ this._handleSubmit }>
+
+          <label>
+            X Coordanate:
+            <input id='x' type="number" min="0" max="4" placeholder="x" required /> 
+          </label>
+
+          <br />
+
+          <label>
+            Y Coordenate:
+            <input id="y" type="number" min="0" max="4" placeholder="y" required />
+          </label>
+
+          <br />
+
+          <label>
+            North:
+            <input type='radio' id='north' name='rotation' value='270' />
+          </label>
+          <label>
+            East:
+            <input type='radio' id='east' name='rotation' value='0' />
+          </label>
+          <label>
+            South:
+            <input type='radio' id='south' name='rotation' value='90' />
+          </label>
+          <label>
+            West:
+            <input type='radio' id='west' name='rotation' value='180' />
+          </label>
+
+
+
+          <input type="submit" value="Place" />
+        </form>
+
+        <div id="report" style={{ display:`${ this.state.display }` }}>
+          <h2>Pacman's coordinates are ({this.state.x}, {this.state.y}) and is facing { facing }</h2>
+        </div>
       </div>
     );
   }  
