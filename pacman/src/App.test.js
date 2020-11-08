@@ -7,7 +7,7 @@ test('renders learn react link', () => {
   expect(linkElement).toBeInTheDocument();
 });
 
-// The documentation suggests the use of Jest with React. Personally, I have little experience with unit testing with JS but I have used rspec when developing with Ruby on Rails in the past.
+// The documentation suggests the use of Jest with React. Personally, I have little experience with unit testing but I have used rspec when developing with Ruby on Rails in the past.
 
 // For this application I would write the following tests:
 
