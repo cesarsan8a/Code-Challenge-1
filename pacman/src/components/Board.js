@@ -1,12 +1,23 @@
 import React from 'react';
 import Pacman from '../components/Pacman';
 import Square from '../components/Square';
+import '../styles/Board.css';
 
-function renderSquare(i, [pacmanX, pacmanY]) {
+function renderSquare(i, [pacmanX, pacmanY], facing) {
     const x = i % 5;
     const y = Math.floor(i / 5);
     const isPacmanHere = (x === pacmanX &&  y === pacmanY);
-    const character = isPacmanHere ? <Pacman /> : null;
+    let rotation = 0;
+    if ( facing === 'E' ) {
+        rotation = 0;
+    } else if ( facing === 'N' ) {
+        rotation = 270;
+    } else if ( facing === 'W' ) {
+        rotation = 180;
+    } else if ( facing === 'S' ) {
+        rotation = 90;
+    }
+    const character = isPacmanHere ? <Pacman rotate = { rotation } /> : null;
 
     return (
         <div key ={i} style={{ width: '20%', height: '20%' }}>
@@ -15,22 +26,15 @@ function renderSquare(i, [pacmanX, pacmanY]) {
     );
 }
 
-function Board({ pacmanPosition }) {
+function Board({ pacmanPosition, facing }) {
     const squares = [];
     for (let i = 0; i < 25; i++) {
-        squares.push(renderSquare(i, pacmanPosition))
+        squares.push(renderSquare(i, pacmanPosition, facing))
     }
 
     console.log(squares);
     return (
-        <div
-            style={{
-                width: '13em',
-                height: '13em',
-                display: 'flex',
-                flexWrap: 'wrap'
-            }}
-        >
+        <div id="board">
             { squares }
         </div>
     );
